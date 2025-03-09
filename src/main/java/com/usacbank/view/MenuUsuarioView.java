@@ -1,13 +1,20 @@
 package com.usacbank.view;
 
+import com.usacbank.controller.ClienteController;
 import com.usacbank.model.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MenuUsuarioView extends BaseView {
-    public MenuUsuarioView(Usuario usuario) {
+    private Usuario usuario;
+    private ClienteController clienteController;
+
+    public MenuUsuarioView(Usuario usuario, ClienteController clienteController) {
         super("Menú de Usuario");
+        this.usuario = usuario;
+        this.clienteController = clienteController;
+
         // Crear la barra de menú
         JMenuBar menuBar = new JMenuBar();
         JMenu ayudaMenu = new JMenu("Ayuda");
@@ -42,9 +49,9 @@ public class MenuUsuarioView extends BaseView {
 
         // Crear los botones
         String[] buttonLabels = {
-                "Registro de Usuario", "Crear Cuenta", "Crear Cuenta",
+                "Crear Cliente", "Ver Clientes", "Crear Cuenta",
                 "Depósitos", "Retiros", "Historial de Transacciones",
-                "Generación de Reportes"
+                "Generación de Reportes", "Cerrar Sesión"
         };
 
         for (String label : buttonLabels) {
@@ -76,6 +83,38 @@ public class MenuUsuarioView extends BaseView {
                 }
             });
 
+            // Configurar acciones para cada botón
+            switch (label) {
+                case "Crear Cliente":
+                    button.addActionListener(e -> {
+                        dispose();
+                        new RegistroClienteView(clienteController, usuario).setVisible(true);
+                    });
+                    break;
+                case "Ver Clientes":
+                    button.addActionListener(e -> {
+                        dispose();
+                        new ListaClientesView(clienteController, usuario).setVisible(true);
+                    });
+                    break;
+                case "Cerrar Sesión":
+                    button.addActionListener(e -> {
+                        dispose();
+                        Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
+                        new MainView(usuarioPorDefecto, clienteController).setVisible(true);
+                    });
+                    break;
+                default:
+                    // Para los botones sin funcionalidad aún
+                    button.addActionListener(e -> {
+                        JOptionPane.showMessageDialog(null,
+                                "Funcionalidad no implementada aún: " + label,
+                                "En desarrollo",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    });
+                    break;
+            }
+
             buttonPanel.add(button);
         }
 
@@ -83,10 +122,60 @@ public class MenuUsuarioView extends BaseView {
         mainPanel.add(Box.createVerticalGlue());
 
         backgroundPanel.add(mainPanel, BorderLayout.CENTER);
+
+        // Acción para mostrar los datos del estudiante
+        datosEstudianteItem.addActionListener(e -> mostrarDatosEstudiante());
     }
 
-    public static void main(String[] args) {
-        Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
-        SwingUtilities.invokeLater(() -> new MenuUsuarioView(usuarioPorDefecto).setVisible(true));
+    private void mostrarDatosEstudiante() {
+        // Crear un nuevo JFrame para mostrar los datos del estudiante
+        JFrame datosEstudianteFrame = new JFrame("Datos del Estudiante");
+        datosEstudianteFrame.setSize(400, 300);
+        datosEstudianteFrame.setLocationRelativeTo(null);
+        datosEstudianteFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Crear el panel de contenido
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        contentPanel.setBackground(new Color(0, 30, 70)); // Fondo oscuro
+
+        // Crear un borde alrededor del panel de contenido
+        contentPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.WHITE, 2),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)));
+
+        // Título destacado
+        JLabel titleLabel = new JLabel("Datos del Estudiante");
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Agregar los datos del estudiante
+        JLabel nombreLabel = new JLabel("Nombre: Christian Javier Rivas Arreaga");
+        nombreLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        nombreLabel.setForeground(Color.WHITE); // Texto blanco
+        nombreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel carnetLabel = new JLabel("Carnet: 202303204");
+        carnetLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        carnetLabel.setForeground(Color.WHITE); // Texto blanco
+        carnetLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel seccionLabel = new JLabel("Sección: B Laboratorio IPC1");
+        seccionLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        seccionLabel.setForeground(Color.WHITE); // Texto blanco
+        seccionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        contentPanel.add(titleLabel);
+        contentPanel.add(Box.createVerticalStrut(20));
+        contentPanel.add(nombreLabel);
+        contentPanel.add(Box.createVerticalStrut(10));
+        contentPanel.add(carnetLabel);
+        contentPanel.add(Box.createVerticalStrut(10));
+        contentPanel.add(seccionLabel);
+
+        datosEstudianteFrame.add(contentPanel);
+        datosEstudianteFrame.setVisible(true);
     }
 }

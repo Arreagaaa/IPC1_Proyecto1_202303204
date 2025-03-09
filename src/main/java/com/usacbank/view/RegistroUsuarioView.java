@@ -1,5 +1,6 @@
 package com.usacbank.view;
 
+import com.usacbank.controller.ClienteController;
 import com.usacbank.model.Usuario;
 
 import javax.swing.*;
@@ -8,9 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RegistroUsuarioView extends BaseView {
+    private Usuario usuarioPorDefecto;
+    private ClienteController clienteController;
 
-    public RegistroUsuarioView() {
+    public RegistroUsuarioView(Usuario usuarioPorDefecto, ClienteController clienteController) {
         super("Registro de Usuario");
+        this.usuarioPorDefecto = usuarioPorDefecto;
+        this.clienteController = clienteController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -108,14 +113,15 @@ public class RegistroUsuarioView extends BaseView {
                 String username = userField.getText();
                 String password = new String(passwordField.getPassword());
 
-                Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
-
-                if (username.equals(usuarioPorDefecto.getUsername()) && password.equals(usuarioPorDefecto.getPassword())) {
+                if (username.equals(usuarioPorDefecto.getUsername())
+                        && password.equals(usuarioPorDefecto.getPassword())) {
                     System.out.println("Redireccionando al menú de usuario...");
-                    SwingUtilities.invokeLater(() -> new MenuUsuarioView().setVisible(true));
+                    SwingUtilities.invokeLater(
+                            () -> new MenuUsuarioView(usuarioPorDefecto, clienteController).setVisible(true));
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Credenciales incorrectas. Intente de nuevo.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Credenciales incorrectas. Intente de nuevo.",
+                            "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -136,6 +142,9 @@ public class RegistroUsuarioView extends BaseView {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new RegistroUsuarioView().setVisible(true));
+        Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
+        ClienteController clienteController = new ClienteController(); // Corrección aquí
+        SwingUtilities
+                .invokeLater(() -> new RegistroUsuarioView(usuarioPorDefecto, clienteController).setVisible(true));
     }
 }

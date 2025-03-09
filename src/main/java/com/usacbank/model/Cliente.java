@@ -35,9 +35,4 @@ public class Cliente {
     public void agregarCuenta(Cuenta cuenta) {
         cuentas.add(cuenta);
     }
-
-    // Método estático para crear el cliente por defecto
-    public static Cliente crearClientePorDefecto() {
-        return new Cliente("3563648950101", "AdministradorIPC1B", "ipc1B1s2025");
-    }
 }

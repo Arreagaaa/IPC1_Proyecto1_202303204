@@ -1,5 +1,7 @@
 package com.usacbank.view;
 
+import com.usacbank.controller.ClienteController;
+import com.usacbank.model.Usuario;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -12,9 +14,13 @@ public class MainView extends BaseView {
     private JButton pressButton;
     private Timer animationTimer;
     private float alpha = 1.0f;
+    private Usuario usuarioPorDefecto;
+    private ClienteController clienteController;
 
-    public MainView() {
+    public MainView(Usuario usuarioPorDefecto, ClienteController clienteController) {
         super("USAC BANK");
+        this.usuarioPorDefecto = usuarioPorDefecto;
+        this.clienteController = clienteController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -120,7 +126,8 @@ public class MainView extends BaseView {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Redireccionando al registro de usuario...");
                 startFadeOutAnimation();
-                SwingUtilities.invokeLater(() -> new RegistroUsuarioView().setVisible(true));
+                SwingUtilities.invokeLater(
+                        () -> new RegistroUsuarioView(usuarioPorDefecto, clienteController).setVisible(true));
             }
         });
 
@@ -175,6 +182,11 @@ public class MainView extends BaseView {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        SwingUtilities.invokeLater(() -> new MainView().setVisible(true));
+
+        // Creamos los objetos necesarios para el constructor de MainView
+        Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
+        ClienteController clienteController = new ClienteController();
+
+        SwingUtilities.invokeLater(() -> new MainView(usuarioPorDefecto, clienteController).setVisible(true));
     }
 }
