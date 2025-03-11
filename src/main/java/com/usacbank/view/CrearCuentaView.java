@@ -118,9 +118,19 @@ public class CrearCuentaView extends BaseView {
             public void actionPerformed(ActionEvent e) {
                 Cliente clienteSeleccionado = (Cliente) clienteComboBox.getSelectedItem();
                 if (clienteSeleccionado != null) {
-                    cuentaController.crearCuenta(clienteSeleccionado);
-                    JOptionPane.showMessageDialog(null, "Cuenta creada exitosamente.", "Éxito",
-                            JOptionPane.INFORMATION_MESSAGE);
+                    int resultado = cuentaController.crearCuenta(clienteSeleccionado);
+                    switch (resultado) {
+                        case 0: // Éxito
+                            JOptionPane.showMessageDialog(null, "Cuenta creada exitosamente.", "Éxito",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            break;
+                        case 1: // Límite excedido
+                            JOptionPane.showMessageDialog(null, 
+                                "El cliente ya tiene el máximo de 4 cuentas permitidas.",
+                                "Error - Límite de cuentas",
+                                JOptionPane.ERROR_MESSAGE);
+                            break;
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente.", "Error",
                             JOptionPane.ERROR_MESSAGE);
