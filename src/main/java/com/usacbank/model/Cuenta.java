@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.Random;
 
 public class Cuenta {
-    private static int contadorCuentas = 0; // Comienza en 0 para generar 00, 01, 02...
+    private static int contadorCuentas = 1; // Comienza en 1 para generar 20BB251, 20BB252...
     private String id;
     private Cliente cliente;
     private double saldo;
@@ -16,8 +16,8 @@ public class Cuenta {
     }
 
     private String generarId() {
-        // Formato: 20BBXX donde XX es un contador secuencial desde 00
-        return String.format("20BB%02d", contadorCuentas++);
+        // Formato: 20BB25X donde X es un contador secuencial
+        return "20BB25" + contadorCuentas++;
     }
 
     public String getId() {
