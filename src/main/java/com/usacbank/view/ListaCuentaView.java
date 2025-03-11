@@ -8,6 +8,8 @@ import com.usacbank.model.Usuario;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,6 +51,34 @@ public class ListaCuentaView extends BaseView {
         titlePanel.add(titleLabel);
         titlePanel.add(Box.createVerticalStrut(20));
 
+        // Después del título y antes de la tabla de clientes, agrega un panel de
+        // búsqueda
+        JPanel searchPanel = new JPanel();
+        searchPanel.setOpaque(false);
+        searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        searchPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel searchLabel = new JLabel("Buscar por CUI:");
+        searchLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        searchLabel.setForeground(Color.WHITE);
+
+        JTextField searchField = new JTextField();
+        searchField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        searchField.setPreferredSize(new Dimension(200, 30));
+
+        JButton searchButton = new JButton("Buscar");
+        searchButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        searchButton.setForeground(Color.WHITE);
+        searchButton.setBackground(new Color(0, 120, 215));
+        searchButton.setFocusPainted(false);
+        searchButton.setBorderPainted(false);
+        searchButton.setContentAreaFilled(true);
+        searchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        searchPanel.add(searchLabel);
+        searchPanel.add(searchField);
+        searchPanel.add(searchButton);
+
         // Panel para la tabla de clientes
         JPanel tablePanel = new JPanel();
         tablePanel.setOpaque(false);
@@ -60,11 +90,30 @@ public class ListaCuentaView extends BaseView {
         clientesLabel.setForeground(Color.WHITE);
         clientesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Crear un modelo de tabla no editable
         String[] clientesColumnNames = { "CUI", "Nombre", "Apellido" };
-        DefaultTableModel clientesTableModel = new DefaultTableModel(clientesColumnNames, 0);
+        DefaultTableModel clientesTableModel = new DefaultTableModel(clientesColumnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hacer todas las celdas no editables
+            }
+        };
+
         JTable clientesTable = new JTable(clientesTableModel);
         clientesTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         clientesTable.setRowHeight(30);
+
+        // Personalizar los headers de la tabla de clientes
+        JTableHeader clientesHeader = clientesTable.getTableHeader();
+        clientesHeader.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        clientesHeader.setForeground(Color.WHITE);
+        clientesHeader.setBackground(new Color(0, 120, 215));
+        clientesHeader.setReorderingAllowed(false);
+        clientesHeader.setResizingAllowed(true);
+
+        // Centrar el texto de los headers
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) clientesHeader.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
         for (Cliente cliente : clienteController.getClientes()) {
             Object[] rowData = { cliente.getCui(), cliente.getNombre(), cliente.getApellido() };
@@ -85,11 +134,30 @@ public class ListaCuentaView extends BaseView {
         cuentasLabel.setForeground(Color.WHITE);
         cuentasLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Crear un modelo de tabla no editable para cuentas
         String[] cuentasColumnNames = { "ID Cuenta", "Saldo" };
-        DefaultTableModel cuentasTableModel = new DefaultTableModel(cuentasColumnNames, 0);
+        DefaultTableModel cuentasTableModel = new DefaultTableModel(cuentasColumnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hacer todas las celdas no editables
+            }
+        };
+
         JTable cuentasTable = new JTable(cuentasTableModel);
         cuentasTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         cuentasTable.setRowHeight(30);
+
+        // Personalizar los headers de la tabla de cuentas
+        JTableHeader cuentasHeader = cuentasTable.getTableHeader();
+        cuentasHeader.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        cuentasHeader.setForeground(Color.WHITE);
+        cuentasHeader.setBackground(new Color(0, 120, 215));
+        cuentasHeader.setReorderingAllowed(false);
+        cuentasHeader.setResizingAllowed(true);
+
+        // Centrar el texto de los headers
+        DefaultTableCellRenderer cuentasHeaderRenderer = (DefaultTableCellRenderer) cuentasHeader.getDefaultRenderer();
+        cuentasHeaderRenderer.setHorizontalAlignment(JLabel.CENTER);
 
         JScrollPane cuentasScrollPane = new JScrollPane(cuentasTable);
         cuentasScrollPane.setPreferredSize(new Dimension(600, 200));
@@ -121,6 +189,41 @@ public class ListaCuentaView extends BaseView {
         volverButton.setPreferredSize(new Dimension(150, 50));
         volverButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        // En el panel de botones, añadir un nuevo botón para crear cuenta
+        JButton crearButton = new JButton("CREAR NUEVA CUENTA");
+        crearButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        crearButton.setForeground(Color.WHITE);
+        crearButton.setBackground(new Color(0, 120, 215));
+        crearButton.setFocusPainted(false);
+        crearButton.setBorderPainted(false);
+        crearButton.setContentAreaFilled(true);
+        crearButton.setPreferredSize(new Dimension(200, 50));
+        crearButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Efectos al pasar el mouse por el botón crear
+        crearButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                crearButton.setBackground(new Color(30, 144, 255));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                crearButton.setBackground(new Color(0, 120, 215));
+            }
+
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                crearButton.setBackground(new Color(0, 90, 170));
+            }
+        });
+
+        // Acción para el botón crear
+        crearButton.addActionListener(e -> {
+            dispose();
+            new CrearCuentaView(cuentaController, clienteController, usuario).setVisible(true);
+        });
+
         // Acción para el botón buscar
         buscarButton.addActionListener(new ActionListener() {
             @Override
@@ -148,19 +251,58 @@ public class ListaCuentaView extends BaseView {
             }
         });
 
+        // Implementar la acción de búsqueda por CUI
+        searchButton.addActionListener(e -> {
+            String cuiBusqueda = searchField.getText().trim();
+            if (cuiBusqueda.isEmpty()) {
+                // Si el campo está vacío, mostrar todos los clientes
+                clientesTableModel.setRowCount(0);
+                for (Cliente cliente : clienteController.getClientes()) {
+                    Object[] rowData = { cliente.getCui(), cliente.getNombre(), cliente.getApellido() };
+                    clientesTableModel.addRow(rowData);
+                }
+            } else {
+                // Buscar cliente con ese CUI
+                Cliente clienteEncontrado = clienteController.getClientePorCui(cuiBusqueda);
+                clientesTableModel.setRowCount(0);
+                if (clienteEncontrado != null) {
+                    Object[] rowData = { clienteEncontrado.getCui(), clienteEncontrado.getNombre(),
+                            clienteEncontrado.getApellido() };
+                    clientesTableModel.addRow(rowData);
+
+                    // Opcional: mostrar sus cuentas automáticamente
+                    List<Cuenta> cuentas = cuentaController.getCuentasPorCliente(clienteEncontrado);
+                    cuentasTableModel.setRowCount(0);
+                    for (Cuenta cuenta : cuentas) {
+                        Object[] cuentaRow = { cuenta.getId(), cuenta.getSaldo() };
+                        cuentasTableModel.addRow(cuentaRow);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "No se encontró ningún cliente con el CUI: " + cuiBusqueda,
+                            "Cliente no encontrado",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
+
         // Acción para el botón volver
         volverButton.addActionListener(e -> {
             dispose();
             new MenuUsuarioView(usuario, clienteController, cuentaController).setVisible(true);
         });
 
+        // Modificar el panel de botones para incluir los tres botones
         buttonPanel.add(buscarButton);
+        buttonPanel.add(crearButton);
         buttonPanel.add(volverButton);
 
         // Agregar todos los elementos al panel de contenido
         contentPanel.add(Box.createVerticalGlue());
         contentPanel.add(titlePanel);
-        contentPanel.add(Box.createVerticalStrut(30));
+        contentPanel.add(Box.createVerticalStrut(20));
+        contentPanel.add(searchPanel);
+        contentPanel.add(Box.createVerticalStrut(10));
         contentPanel.add(clientesLabel);
         contentPanel.add(clientesScrollPane);
         contentPanel.add(Box.createVerticalStrut(30));

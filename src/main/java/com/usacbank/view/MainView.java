@@ -130,7 +130,8 @@ public class MainView extends BaseView {
                 System.out.println("Redireccionando al registro de usuario...");
                 startFadeOutAnimation();
                 SwingUtilities.invokeLater(
-                        () -> new RegistroUsuarioView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true));
+                        () -> new RegistroUsuarioView(usuarioPorDefecto, clienteController, cuentaController)
+                                .setVisible(true));
             }
         });
 
@@ -191,6 +192,7 @@ public class MainView extends BaseView {
         ClienteController clienteController = new ClienteController();
         CuentaController cuentaController = new CuentaController();
 
-        SwingUtilities.invokeLater(() -> new MainView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true));
+        SwingUtilities.invokeLater(
+                () -> new MainView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true));
     }
 }

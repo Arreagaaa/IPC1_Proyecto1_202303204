@@ -22,21 +22,22 @@ public class CuentaController {
                 cuentasDelCliente++;
             }
         }
-        
+
         if (cuentasDelCliente >= MAX_CUENTAS_POR_CLIENTE) {
             return 1; // Límite de cuentas por cliente alcanzado
         }
-        
+
         Cuenta nuevaCuenta = new Cuenta(cliente);
         cliente.agregarCuenta(nuevaCuenta);
         cuentas.add(nuevaCuenta);
-        
+
         System.out.println("Cuenta creada: " + nuevaCuenta.getId());
         System.out.println("Cuentas actuales:");
         for (Cuenta cuenta : cuentas) {
-            System.out.println("ID: " + cuenta.getId() + ", Cliente: " + cuenta.getCliente().getNombre() + ", Saldo: " + cuenta.getSaldo());
+            System.out.println("ID: " + cuenta.getId() + ", Cliente: " + cuenta.getCliente().getNombre() + ", Saldo: "
+                    + cuenta.getSaldo());
         }
-        
+
         return 0; // Éxito
     }
 
@@ -52,5 +53,9 @@ public class CuentaController {
             }
         }
         return cuentasCliente;
+    }
+
+    public boolean existenCuentas() {
+        return !cuentas.isEmpty();
     }
 }

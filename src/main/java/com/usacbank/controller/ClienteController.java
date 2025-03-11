@@ -78,4 +78,8 @@ public class ClienteController {
         }
         return null;
     }
+
+    public boolean existenClientes() {
+        return !clientes.isEmpty();
+    }
 }

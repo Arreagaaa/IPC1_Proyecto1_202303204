@@ -3,12 +3,14 @@ package com.usacbank.view;
 import com.usacbank.controller.CuentaController;
 import com.usacbank.controller.ClienteController;
 import com.usacbank.model.Cliente;
+import com.usacbank.model.Cuenta;
 import com.usacbank.model.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class CrearCuentaView extends BaseView {
     private CuentaController cuentaController;
@@ -57,11 +59,40 @@ public class CrearCuentaView extends BaseView {
         clienteLabel.setForeground(Color.WHITE);
         clienteLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // ComboBox con renderizador personalizado para mostrar cuántas cuentas tiene
+        // cada cliente
         JComboBox<Cliente> clienteComboBox = new JComboBox<>();
+
+        // Personalizar el renderizador del ComboBox
+        clienteComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+                    boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (value instanceof Cliente) {
+                    Cliente cliente = (Cliente) value;
+                    List<Cuenta> cuentasCliente = cuentaController.getCuentasPorCliente(cliente);
+                    int numCuentas = cuentasCliente.size();
+                    setText(cliente.toString() + " - Cuentas: " + numCuentas + "/4");
+
+                    // Colorear en rojo si el cliente ya tiene 4 cuentas
+                    if (numCuentas >= 4) {
+                        setForeground(Color.RED);
+                    } else {
+                        setForeground(isSelected ? list.getSelectionForeground() : list.getForeground());
+                    }
+                }
+                return this;
+            }
+        });
+
+        // Agregar los clientes al ComboBox
         for (Cliente cliente : clienteController.getClientes()) {
             clienteComboBox.addItem(cliente);
         }
-        clienteComboBox.setMaximumSize(new Dimension(300, 30));
+
+        clienteComboBox.setMaximumSize(new Dimension(400, 30));
         clienteComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
         formPanel.add(clienteLabel);
@@ -113,6 +144,7 @@ public class CrearCuentaView extends BaseView {
             }
         });
 
+        // Dentro del ActionListener del botón crear:
         crearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -123,12 +155,15 @@ public class CrearCuentaView extends BaseView {
                         case 0: // Éxito
                             JOptionPane.showMessageDialog(null, "Cuenta creada exitosamente.", "Éxito",
                                     JOptionPane.INFORMATION_MESSAGE);
+                            // Redirigir a la lista de cuentas
+                            dispose();
+                            new ListaCuentaView(cuentaController, clienteController, usuario).setVisible(true);
                             break;
                         case 1: // Límite excedido
-                            JOptionPane.showMessageDialog(null, 
-                                "El cliente ya tiene el máximo de 4 cuentas permitidas.",
-                                "Error - Límite de cuentas",
-                                JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null,
+                                    "El cliente ya tiene el máximo de 4 cuentas permitidas.",
+                                    "Error - Límite de cuentas",
+                                    JOptionPane.ERROR_MESSAGE);
                             break;
                     }
                 } else {

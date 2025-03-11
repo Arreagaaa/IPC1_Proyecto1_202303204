@@ -94,24 +94,122 @@ public class MenuUsuarioView extends BaseView {
                         new RegistroClienteView(clienteController, usuario, cuentaController).setVisible(true);
                     });
                     break;
+
                 case "Ver Clientes":
                     button.addActionListener(e -> {
-                        dispose();
-                        new ListaClientesView(clienteController, usuario, cuentaController).setVisible(true);
+                        if (!clienteController.existenClientes()) {
+                            JOptionPane.showMessageDialog(null,
+                                    "No hay clientes registrados en el sistema.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            dispose();
+                            new ListaClientesView(clienteController, usuario, cuentaController).setVisible(true);
+                        }
                     });
                     break;
+
                 case "Crear Cuenta":
                     button.addActionListener(e -> {
-                        dispose();
-                        new CrearCuentaView(cuentaController, clienteController, usuario).setVisible(true);
+                        if (!clienteController.existenClientes()) {
+                            JOptionPane.showMessageDialog(null,
+                                    "No hay clientes registrados. Debe crear clientes antes de crear cuentas.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            dispose();
+                            new CrearCuentaView(cuentaController, clienteController, usuario).setVisible(true);
+                        }
                     });
                     break;
+
                 case "Ver Cuentas":
                     button.addActionListener(e -> {
-                        dispose();
-                        new ListaCuentaView(cuentaController, clienteController, usuario).setVisible(true);
+                        if (!cuentaController.existenCuentas()) {
+                            JOptionPane.showMessageDialog(null,
+                                    "No hay cuentas registradas en el sistema.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else if (!clienteController.existenClientes()) {
+                            JOptionPane.showMessageDialog(null,
+                                    "No hay clientes registrados en el sistema.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            dispose();
+                            new ListaCuentaView(cuentaController, clienteController, usuario).setVisible(true);
+                        }
                     });
                     break;
+
+                case "Depósitos":
+                    button.addActionListener(e -> {
+                        if (!cuentaController.existenCuentas()) {
+                            JOptionPane.showMessageDialog(null,
+                                    "No hay cuentas registradas. No se pueden realizar depósitos.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            // Navegar a la vista de depósitos cuando la implementes
+                            JOptionPane.showMessageDialog(null,
+                                    "Funcionalidad no implementada aún: Depósitos",
+                                    "En desarrollo",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    });
+                    break;
+
+                case "Retiros":
+                    button.addActionListener(e -> {
+                        if (!cuentaController.existenCuentas()) {
+                            JOptionPane.showMessageDialog(null,
+                                    "No hay cuentas registradas. No se pueden realizar retiros.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            // Navegar a la vista de retiros cuando la implementes
+                            JOptionPane.showMessageDialog(null,
+                                    "Funcionalidad no implementada aún: Retiros",
+                                    "En desarrollo",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    });
+                    break;
+
+                case "Historial de Transacciones":
+                    button.addActionListener(e -> {
+                        if (!cuentaController.existenCuentas()) {
+                            JOptionPane.showMessageDialog(null,
+                                    "No hay cuentas registradas. No hay historial de transacciones para mostrar.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            // Navegar a la vista de historial cuando la implementes
+                            JOptionPane.showMessageDialog(null,
+                                    "Funcionalidad no implementada aún: Historial de Transacciones",
+                                    "En desarrollo",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    });
+                    break;
+
+                case "Generación de Reportes":
+                    button.addActionListener(e -> {
+                        if (!cuentaController.existenCuentas() && !clienteController.existenClientes()) {
+                            JOptionPane.showMessageDialog(null,
+                                    "No hay datos suficientes para generar reportes.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            // Navegar a la vista de reportes cuando la implementes
+                            JOptionPane.showMessageDialog(null,
+                                    "Funcionalidad no implementada aún: Generación de Reportes",
+                                    "En desarrollo",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    });
+                    break;
+
                 case "Cerrar Sesión":
                     button.addActionListener(e -> {
                         dispose();
@@ -119,6 +217,7 @@ public class MenuUsuarioView extends BaseView {
                         new MainView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true);
                     });
                     break;
+
                 default:
                     // Para los botones sin funcionalidad aún
                     button.addActionListener(e -> {

@@ -14,7 +14,8 @@ public class RegistroUsuarioView extends BaseView {
     private ClienteController clienteController;
     private CuentaController cuentaController;
 
-    public RegistroUsuarioView(Usuario usuarioPorDefecto, ClienteController clienteController, CuentaController cuentaController) {
+    public RegistroUsuarioView(Usuario usuarioPorDefecto, ClienteController clienteController,
+            CuentaController cuentaController) {
         super("Registro de Usuario");
         this.usuarioPorDefecto = usuarioPorDefecto;
         this.clienteController = clienteController;
@@ -120,7 +121,8 @@ public class RegistroUsuarioView extends BaseView {
                         && password.equals(usuarioPorDefecto.getPassword())) {
                     System.out.println("Redireccionando al menú de usuario...");
                     SwingUtilities.invokeLater(
-                            () -> new MenuUsuarioView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true));
+                            () -> new MenuUsuarioView(usuarioPorDefecto, clienteController, cuentaController)
+                                    .setVisible(true));
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Credenciales incorrectas. Intente de nuevo.",
@@ -148,6 +150,7 @@ public class RegistroUsuarioView extends BaseView {
         Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
         ClienteController clienteController = new ClienteController();
         CuentaController cuentaController = new CuentaController();
-        SwingUtilities.invokeLater(() -> new RegistroUsuarioView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true));
+        SwingUtilities.invokeLater(
+                () -> new RegistroUsuarioView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true));
     }
 }
