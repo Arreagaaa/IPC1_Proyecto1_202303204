@@ -1,6 +1,7 @@
 package com.usacbank.view;
 
 import com.usacbank.controller.ClienteController;
+import com.usacbank.controller.CuentaController;
 import com.usacbank.model.Usuario;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,11 +17,13 @@ public class MainView extends BaseView {
     private float alpha = 1.0f;
     private Usuario usuarioPorDefecto;
     private ClienteController clienteController;
+    private CuentaController cuentaController;
 
-    public MainView(Usuario usuarioPorDefecto, ClienteController clienteController) {
+    public MainView(Usuario usuarioPorDefecto, ClienteController clienteController, CuentaController cuentaController) {
         super("USAC BANK");
         this.usuarioPorDefecto = usuarioPorDefecto;
         this.clienteController = clienteController;
+        this.cuentaController = cuentaController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -127,7 +130,7 @@ public class MainView extends BaseView {
                 System.out.println("Redireccionando al registro de usuario...");
                 startFadeOutAnimation();
                 SwingUtilities.invokeLater(
-                        () -> new RegistroUsuarioView(usuarioPorDefecto, clienteController).setVisible(true));
+                        () -> new RegistroUsuarioView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true));
             }
         });
 
@@ -186,7 +189,8 @@ public class MainView extends BaseView {
         // Creamos los objetos necesarios para el constructor de MainView
         Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
         ClienteController clienteController = new ClienteController();
+        CuentaController cuentaController = new CuentaController();
 
-        SwingUtilities.invokeLater(() -> new MainView(usuarioPorDefecto, clienteController).setVisible(true));
+        SwingUtilities.invokeLater(() -> new MainView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true));
     }
 }

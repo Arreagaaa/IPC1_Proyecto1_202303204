@@ -13,21 +13,24 @@ public class ClienteController {
     }
 
     /**
-     * Crea un nuevo cliente si el CUI no está duplicado y no se ha alcanzado el límite
+     * Crea un nuevo cliente si el CUI no está duplicado y no se ha alcanzado el
+     * límite
+     * 
      * @param cliente El cliente a crear
-     * @return 0 si se creó exitosamente, 1 si el CUI está duplicado, 2 si se alcanzó el límite
+     * @return 0 si se creó exitosamente, 1 si el CUI está duplicado, 2 si se
+     *         alcanzó el límite
      */
     public int crearCliente(Cliente cliente) {
         // Verificar si ya existe un cliente con el mismo CUI
         if (existeCUI(cliente.getCui())) {
             return 1; // CUI duplicado
         }
-        
+
         // Verificar si se ha alcanzado el límite de clientes
         if (clientes.size() >= LIMITE_CLIENTES) {
             return 2; // Límite alcanzado
         }
-        
+
         // Si no hay problemas, agregar el cliente
         clientes.add(cliente);
         return 0; // Éxito
@@ -35,7 +38,9 @@ public class ClienteController {
 
     /**
      * Crea un nuevo cliente con los datos proporcionados
-     * @return 0 si se creó exitosamente, 1 si el CUI está duplicado, 2 si se alcanzó el límite
+     * 
+     * @return 0 si se creó exitosamente, 1 si el CUI está duplicado, 2 si se
+     *         alcanzó el límite
      */
     public int crearCliente(String cui, String nombre, String apellido) {
         Cliente nuevoCliente = new Cliente(cui, nombre, apellido);
@@ -63,5 +68,14 @@ public class ClienteController {
 
     public List<Cliente> getClientes() {
         return clientes;
+    }
+
+    public Cliente getClientePorCui(String cui) {
+        for (Cliente cliente : getClientes()) {
+            if (cliente.getCui().equals(cui)) {
+                return cliente;
+            }
+        }
+        return null;
     }
 }

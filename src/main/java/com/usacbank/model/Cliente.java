@@ -35,4 +35,9 @@ public class Cliente {
     public void agregarCuenta(Cuenta cuenta) {
         cuentas.add(cuenta);
     }
+
+    @Override
+    public String toString() {
+        return cui + " - " + nombre + " " + apellido;
+    }
 }

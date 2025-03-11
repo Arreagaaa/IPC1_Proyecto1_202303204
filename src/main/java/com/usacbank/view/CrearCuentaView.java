@@ -1,7 +1,7 @@
 package com.usacbank.view;
 
-import com.usacbank.controller.ClienteController;
 import com.usacbank.controller.CuentaController;
+import com.usacbank.controller.ClienteController;
 import com.usacbank.model.Cliente;
 import com.usacbank.model.Usuario;
 
@@ -10,17 +10,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RegistroClienteView extends BaseView {
+public class CrearCuentaView extends BaseView {
+    private CuentaController cuentaController;
     private ClienteController clienteController;
     private Usuario usuario;
-    private CuentaController cuentaController;
 
-    public RegistroClienteView(ClienteController clienteController, Usuario usuario,
-            CuentaController cuentaController) {
-        super("Registro de Cliente");
+    public CrearCuentaView(CuentaController cuentaController, ClienteController clienteController, Usuario usuario) {
+        super("Crear Cuenta");
+        this.cuentaController = cuentaController;
         this.clienteController = clienteController;
         this.usuario = usuario;
-        this.cuentaController = cuentaController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -39,7 +38,7 @@ public class RegistroClienteView extends BaseView {
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
         titlePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel titleLabel = new JLabel("Crear Cliente");
+        JLabel titleLabel = new JLabel("Crear Cuenta");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 36));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -53,44 +52,21 @@ public class RegistroClienteView extends BaseView {
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel cuiLabel = new JLabel("CUI:");
-        cuiLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        cuiLabel.setForeground(Color.WHITE);
-        cuiLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel clienteLabel = new JLabel("Cliente:");
+        clienteLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        clienteLabel.setForeground(Color.WHITE);
+        clienteLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JTextField cuiField = new JTextField();
-        cuiField.setMaximumSize(new Dimension(300, 30));
-        cuiField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        JComboBox<Cliente> clienteComboBox = new JComboBox<>();
+        for (Cliente cliente : clienteController.getClientes()) {
+            clienteComboBox.addItem(cliente);
+        }
+        clienteComboBox.setMaximumSize(new Dimension(300, 30));
+        clienteComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
-        JLabel nombreLabel = new JLabel("Nombre:");
-        nombreLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        nombreLabel.setForeground(Color.WHITE);
-        nombreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JTextField nombreField = new JTextField();
-        nombreField.setMaximumSize(new Dimension(300, 30));
-        nombreField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-
-        JLabel apellidoLabel = new JLabel("Apellido:");
-        apellidoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        apellidoLabel.setForeground(Color.WHITE);
-        apellidoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JTextField apellidoField = new JTextField();
-        apellidoField.setMaximumSize(new Dimension(300, 30));
-        apellidoField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-
-        formPanel.add(cuiLabel);
+        formPanel.add(clienteLabel);
         formPanel.add(Box.createVerticalStrut(10));
-        formPanel.add(cuiField);
-        formPanel.add(Box.createVerticalStrut(20));
-        formPanel.add(nombreLabel);
-        formPanel.add(Box.createVerticalStrut(10));
-        formPanel.add(nombreField);
-        formPanel.add(Box.createVerticalStrut(20));
-        formPanel.add(apellidoLabel);
-        formPanel.add(Box.createVerticalStrut(10));
-        formPanel.add(apellidoField);
+        formPanel.add(clienteComboBox);
 
         // Panel de botones
         JPanel buttonPanel = new JPanel();
@@ -140,43 +116,14 @@ public class RegistroClienteView extends BaseView {
         crearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String cui = cuiField.getText();
-                String nombre = nombreField.getText();
-                String apellido = apellidoField.getText();
-
-                if (cui.isEmpty() || nombre.isEmpty() || apellido.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.", "Error",
+                Cliente clienteSeleccionado = (Cliente) clienteComboBox.getSelectedItem();
+                if (clienteSeleccionado != null) {
+                    cuentaController.crearCuenta(clienteSeleccionado);
+                    JOptionPane.showMessageDialog(null, "Cuenta creada exitosamente.", "Éxito",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente.", "Error",
                             JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // Intentar crear el cliente y manejar el resultado
-                Cliente nuevoCliente = new Cliente(cui, nombre, apellido);
-                int resultado = clienteController.crearCliente(nuevoCliente);
-
-                switch (resultado) {
-                    case 0: // Éxito
-                        JOptionPane.showMessageDialog(null, "Cliente creado exitosamente.", "Éxito",
-                                JOptionPane.INFORMATION_MESSAGE);
-
-                        // Cambiar a la vista de lista de clientes
-                        dispose();
-                        new ListaClientesView(clienteController, usuario, cuentaController).setVisible(true);
-                        break;
-
-                    case 1: // CUI duplicado
-                        JOptionPane.showMessageDialog(null,
-                                "Ya existe un cliente con el CUI: " + cui,
-                                "Error - CUI Duplicado",
-                                JOptionPane.ERROR_MESSAGE);
-                        break;
-
-                    case 2: // Límite alcanzado
-                        JOptionPane.showMessageDialog(null,
-                                "Se ha alcanzado el límite de 5 clientes permitidos.",
-                                "Error - Límite Alcanzado",
-                                JOptionPane.ERROR_MESSAGE);
-                        break;
                 }
             }
         });
@@ -201,17 +148,5 @@ public class RegistroClienteView extends BaseView {
 
         mainContainer.add(contentPanel, BorderLayout.CENTER);
         backgroundPanel.add(mainContainer, BorderLayout.CENTER);
-
-        // Verificar inmediatamente si se alcanzó el límite de clientes
-        if (clienteController.limiteAlcanzado()) {
-            JOptionPane.showMessageDialog(null,
-                    "Se ha alcanzado el límite de 5 clientes permitidos.",
-                    "Límite Alcanzado",
-                    JOptionPane.WARNING_MESSAGE);
-
-            // Deshabilitar el botón de crear
-            crearButton.setEnabled(false);
-            crearButton.setBackground(new Color(150, 150, 150));
-        }
     }
 }

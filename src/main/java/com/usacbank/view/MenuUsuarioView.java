@@ -1,6 +1,7 @@
 package com.usacbank.view;
 
 import com.usacbank.controller.ClienteController;
+import com.usacbank.controller.CuentaController;
 import com.usacbank.model.Usuario;
 
 import javax.swing.*;
@@ -9,11 +10,13 @@ import java.awt.*;
 public class MenuUsuarioView extends BaseView {
     private Usuario usuario;
     private ClienteController clienteController;
+    private CuentaController cuentaController;
 
-    public MenuUsuarioView(Usuario usuario, ClienteController clienteController) {
+    public MenuUsuarioView(Usuario usuario, ClienteController clienteController, CuentaController cuentaController) {
         super("Menú de Usuario");
         this.usuario = usuario;
         this.clienteController = clienteController;
+        this.cuentaController = cuentaController;
 
         // Crear la barra de menú
         JMenuBar menuBar = new JMenuBar();
@@ -49,7 +52,7 @@ public class MenuUsuarioView extends BaseView {
 
         // Crear los botones
         String[] buttonLabels = {
-                "Crear Cliente", "Ver Clientes", "Crear Cuenta",
+                "Crear Cliente", "Ver Clientes", "Crear Cuenta", "Ver Cuentas",
                 "Depósitos", "Retiros", "Historial de Transacciones",
                 "Generación de Reportes", "Cerrar Sesión"
         };
@@ -88,20 +91,32 @@ public class MenuUsuarioView extends BaseView {
                 case "Crear Cliente":
                     button.addActionListener(e -> {
                         dispose();
-                        new RegistroClienteView(clienteController, usuario).setVisible(true);
+                        new RegistroClienteView(clienteController, usuario, cuentaController).setVisible(true);
                     });
                     break;
                 case "Ver Clientes":
                     button.addActionListener(e -> {
                         dispose();
-                        new ListaClientesView(clienteController, usuario).setVisible(true);
+                        new ListaClientesView(clienteController, usuario, cuentaController).setVisible(true);
+                    });
+                    break;
+                case "Crear Cuenta":
+                    button.addActionListener(e -> {
+                        dispose();
+                        new CrearCuentaView(cuentaController, clienteController, usuario).setVisible(true);
+                    });
+                    break;
+                case "Ver Cuentas":
+                    button.addActionListener(e -> {
+                        dispose();
+                        new ListaCuentaView(cuentaController, clienteController, usuario).setVisible(true);
                     });
                     break;
                 case "Cerrar Sesión":
                     button.addActionListener(e -> {
                         dispose();
                         Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
-                        new MainView(usuarioPorDefecto, clienteController).setVisible(true);
+                        new MainView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true);
                     });
                     break;
                 default:

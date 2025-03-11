@@ -1,6 +1,7 @@
 package com.usacbank.view;
 
 import com.usacbank.controller.ClienteController;
+import com.usacbank.controller.CuentaController;
 import com.usacbank.model.Cliente;
 import com.usacbank.model.Usuario;
 
@@ -12,11 +13,13 @@ import javax.swing.table.DefaultTableModel;
 public class ListaClientesView extends BaseView {
     private ClienteController clienteController;
     private Usuario usuario;
+    private CuentaController cuentaController;
 
-    public ListaClientesView(ClienteController clienteController, Usuario usuario) {
+    public ListaClientesView(ClienteController clienteController, Usuario usuario, CuentaController cuentaController) {
         super("Lista de Clientes");
         this.clienteController = clienteController;
         this.usuario = usuario;
+        this.cuentaController = cuentaController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -36,7 +39,7 @@ public class ListaClientesView extends BaseView {
 
         titlePanel.add(titleLabel);
         titlePanel.add(Box.createVerticalStrut(20));
-        
+
         // Información sobre límite de clientes
         JLabel infoLabel = new JLabel("Clientes registrados: " + clienteController.getClientes().size() + " / 5");
         infoLabel.setFont(new Font("Segoe UI", Font.ITALIC, 14));
@@ -63,29 +66,29 @@ public class ListaClientesView extends BaseView {
 
         JTable table = new JTable(model);
         table.setFillsViewportHeight(true);
-        table.setBackground(Color.WHITE);  // Fondo blanco
-        table.setForeground(new Color(0, 30, 70));  // Texto azul oscuro
+        table.setBackground(Color.WHITE); // Fondo blanco
+        table.setForeground(new Color(0, 30, 70)); // Texto azul oscuro
         table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         table.setRowHeight(30);
         table.setShowGrid(true);
-        table.setGridColor(new Color(220, 220, 220));  // Líneas de cuadrícula gris claro
-        
+        table.setGridColor(new Color(220, 220, 220)); // Líneas de cuadrícula gris claro
+
         // Centrar el contenido de todas las celdas de la tabla
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        
+
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
-        
+
         // Encabezados de columna
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         table.getTableHeader().setBackground(new Color(0, 90, 170));
         table.getTableHeader().setForeground(Color.WHITE);
-        
+
         // También centrar los encabezados de las columnas
-        ((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer())
-            .setHorizontalAlignment(JLabel.CENTER);
+        ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
+                .setHorizontalAlignment(JLabel.CENTER);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(0, 90, 170)));
@@ -118,7 +121,7 @@ public class ListaClientesView extends BaseView {
 
         crearButton.addActionListener(e -> {
             dispose();
-            new RegistroClienteView(clienteController, usuario).setVisible(true);
+            new RegistroClienteView(clienteController, usuario, cuentaController).setVisible(true);
         });
 
         // Botón para volver al menú
@@ -134,7 +137,7 @@ public class ListaClientesView extends BaseView {
 
         volverButton.addActionListener(e -> {
             dispose();
-            new MenuUsuarioView(usuario, clienteController).setVisible(true);
+            new MenuUsuarioView(usuario, clienteController, cuentaController).setVisible(true);
         });
 
         buttonPanel.add(crearButton);
