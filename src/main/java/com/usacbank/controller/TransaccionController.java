@@ -18,14 +18,39 @@ public class TransaccionController {
             return false;
         }
 
-        // Realizar el depósito en la cuenta
         cuenta.depositar(monto);
-
-        // Registrar la transacción
         Transaccion transaccion = new Transaccion(cuenta, monto, "DEPOSITO");
         transacciones.add(transaccion);
-
         return true;
+    }
+
+    public boolean registrarRetiro(Cuenta cuenta, double monto) {
+        // Validar que el monto sea positivo
+        if (monto <= 0) {
+            return false;
+        }
+
+        // Validar que haya saldo suficiente
+        if (cuenta.getSaldo() < monto) {
+            return false;
+        }
+
+        // Validar que el saldo no sea cero
+        if (cuenta.getSaldo() == 0) {
+            return false;
+        }
+
+        // Realizar el retiro
+        boolean retiroExitoso = cuenta.retirar(monto);
+
+        if (retiroExitoso) {
+            // Registrar la transacción
+            Transaccion transaccion = new Transaccion(cuenta, monto, "RETIRO");
+            transacciones.add(transaccion);
+            return true;
+        }
+
+        return false;
     }
 
     public List<Transaccion> getTransacciones() {

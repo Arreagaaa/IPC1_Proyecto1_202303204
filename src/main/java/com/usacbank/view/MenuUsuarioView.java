@@ -173,11 +173,9 @@ public class MenuUsuarioView extends BaseView {
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE);
                         } else {
-                            // Navegar a la vista de retiros cuando la implementes
-                            JOptionPane.showMessageDialog(null,
-                                    "Funcionalidad no implementada aún: Retiros",
-                                    "En desarrollo",
-                                    JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
+                            new RetiroView(cuentaController, clienteController, transaccionController, usuario)
+                                    .setVisible(true);
                         }
                     });
                     break;
