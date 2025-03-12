@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransaccionController {
+    public static final int MAX_TRANSACCIONES_POR_CUENTA = 25;
     private List<Transaccion> transacciones;
 
     public TransaccionController() {
@@ -18,39 +19,61 @@ public class TransaccionController {
             return false;
         }
 
+        // Verificar límite de transacciones
+        List<Transaccion> transaccionesCuenta = getTransaccionesPorCuenta(cuenta);
+        if (transaccionesCuenta.size() >= MAX_TRANSACCIONES_POR_CUENTA) {
+            return false; // Límite de transacciones alcanzado
+        }
+
         cuenta.depositar(monto);
+        // Ahora creamos la transacción después de modificar el saldo
         Transaccion transaccion = new Transaccion(cuenta, monto, "DEPOSITO");
         transacciones.add(transaccion);
         return true;
     }
 
     public boolean registrarRetiro(Cuenta cuenta, double monto) {
-        // Validar que el monto sea positivo
+        // Validar monto positivo
         if (monto <= 0) {
             return false;
         }
 
-        // Validar que haya saldo suficiente
-        if (cuenta.getSaldo() < monto) {
+        // Validar saldo suficiente y no cero
+        if (cuenta.getSaldo() < monto || cuenta.getSaldo() == 0) {
             return false;
         }
 
-        // Validar que el saldo no sea cero
-        if (cuenta.getSaldo() == 0) {
-            return false;
+        // Verificar límite de transacciones
+        List<Transaccion> transaccionesCuenta = getTransaccionesPorCuenta(cuenta);
+        if (transaccionesCuenta.size() >= MAX_TRANSACCIONES_POR_CUENTA) {
+            return false; // Límite de transacciones alcanzado
         }
 
         // Realizar el retiro
         boolean retiroExitoso = cuenta.retirar(monto);
 
         if (retiroExitoso) {
-            // Registrar la transacción
+            // Registrar la transacción después de modificar el saldo
             Transaccion transaccion = new Transaccion(cuenta, monto, "RETIRO");
             transacciones.add(transaccion);
             return true;
         }
 
         return false;
+    }
+
+    private int contarTransaccionesPorCuenta(Cuenta cuenta) {
+        int contador = 0;
+        for (Transaccion transaccion : transacciones) {
+            if (transaccion.getCuenta().getId().equals(cuenta.getId())) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    public boolean limiteTransaccionesAlcanzado(Cuenta cuenta) {
+        return contarTransaccionesPorCuenta(cuenta) >= MAX_TRANSACCIONES_POR_CUENTA;
     }
 
     public List<Transaccion> getTransacciones() {
@@ -64,6 +87,10 @@ public class TransaccionController {
                 transaccionesCuenta.add(transaccion);
             }
         }
+
+        // Ordenar transacciones por fecha, de la más antigua a la más reciente
+        transaccionesCuenta.sort((t1, t2) -> t1.getFecha().compareTo(t2.getFecha()));
+
         return transaccionesCuenta;
     }
 }

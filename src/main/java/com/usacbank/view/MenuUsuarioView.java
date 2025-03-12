@@ -188,11 +188,9 @@ public class MenuUsuarioView extends BaseView {
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE);
                         } else {
-                            // Navegar a la vista de historial cuando la implementes
-                            JOptionPane.showMessageDialog(null,
-                                    "Funcionalidad no implementada aún: Historial de Transacciones",
-                                    "En desarrollo",
-                                    JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
+                            new HistorialTransaccionesView(cuentaController, clienteController, transaccionController,
+                                    usuario).setVisible(true);
                         }
                     });
                     break;

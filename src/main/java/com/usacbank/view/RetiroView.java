@@ -6,12 +6,14 @@ import com.usacbank.controller.TransaccionController;
 import com.usacbank.model.Cliente;
 import com.usacbank.model.Cuenta;
 import com.usacbank.model.Usuario;
+import com.usacbank.model.Transaccion;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class RetiroView extends BaseView {
     private CuentaController cuentaController;
@@ -205,6 +207,19 @@ public class RetiroView extends BaseView {
                                             + new DecimalFormat("#,##0.00").format(cuentaSeleccionada.getSaldo()) +
                                             "\nMonto a retirar: Q" + new DecimalFormat("#,##0.00").format(monto),
                                     "Error - Saldo insuficiente",
+                                    JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        // Verificar si se alcanzó el límite de transacciones
+                        List<Transaccion> transaccionesCuenta = transaccionController
+                                .getTransaccionesPorCuenta(cuentaSeleccionada);
+                        if (transaccionesCuenta.size() >= TransaccionController.MAX_TRANSACCIONES_POR_CUENTA) {
+                            JOptionPane.showMessageDialog(null,
+                                    "Esta cuenta ha alcanzado el límite de "
+                                            + TransaccionController.MAX_TRANSACCIONES_POR_CUENTA +
+                                            " transacciones permitidas.",
+                                    "Error - Límite de transacciones",
                                     JOptionPane.ERROR_MESSAGE);
                             return;
                         }

@@ -55,6 +55,16 @@ public class CuentaController {
         return cuentasCliente;
     }
 
+    // Nuevo método para buscar una cuenta por su ID
+    public Cuenta getCuentaPorId(String id) {
+        for (Cuenta cuenta : cuentas) {
+            if (cuenta.getId().equals(id)) {
+                return cuenta;
+            }
+        }
+        return null; // Retorna null si no se encuentra la cuenta
+    }
+
     public boolean existenCuentas() {
         return !cuentas.isEmpty();
     }
