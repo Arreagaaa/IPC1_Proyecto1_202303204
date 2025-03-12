@@ -2,6 +2,7 @@ package com.usacbank.view;
 
 import com.usacbank.controller.ClienteController;
 import com.usacbank.controller.CuentaController;
+import com.usacbank.controller.TransaccionController;
 import com.usacbank.model.Usuario;
 
 import javax.swing.*;
@@ -13,13 +14,15 @@ public class RegistroUsuarioView extends BaseView {
     private Usuario usuarioPorDefecto;
     private ClienteController clienteController;
     private CuentaController cuentaController;
+    private TransaccionController transaccionController;
 
     public RegistroUsuarioView(Usuario usuarioPorDefecto, ClienteController clienteController,
-            CuentaController cuentaController) {
+            CuentaController cuentaController, TransaccionController transaccionController) {
         super("Registro de Usuario");
         this.usuarioPorDefecto = usuarioPorDefecto;
         this.clienteController = clienteController;
         this.cuentaController = cuentaController;
+        this.transaccionController = transaccionController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -121,7 +124,8 @@ public class RegistroUsuarioView extends BaseView {
                         && password.equals(usuarioPorDefecto.getPassword())) {
                     System.out.println("Redireccionando al menú de usuario...");
                     SwingUtilities.invokeLater(
-                            () -> new MenuUsuarioView(usuarioPorDefecto, clienteController, cuentaController)
+                            () -> new MenuUsuarioView(usuarioPorDefecto, clienteController, cuentaController,
+                                    transaccionController)
                                     .setVisible(true));
                     dispose();
                 } else {
@@ -150,7 +154,9 @@ public class RegistroUsuarioView extends BaseView {
         Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
         ClienteController clienteController = new ClienteController();
         CuentaController cuentaController = new CuentaController();
+        TransaccionController transaccionController = new TransaccionController();
         SwingUtilities.invokeLater(
-                () -> new RegistroUsuarioView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true));
+                () -> new RegistroUsuarioView(usuarioPorDefecto, clienteController, cuentaController,
+                        transaccionController).setVisible(true));
     }
 }

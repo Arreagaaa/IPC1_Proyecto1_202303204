@@ -2,6 +2,7 @@ package com.usacbank.view;
 
 import com.usacbank.controller.ClienteController;
 import com.usacbank.controller.CuentaController;
+import com.usacbank.controller.TransaccionController;
 import com.usacbank.model.Usuario;
 
 import javax.swing.*;
@@ -11,12 +12,15 @@ public class MenuUsuarioView extends BaseView {
     private Usuario usuario;
     private ClienteController clienteController;
     private CuentaController cuentaController;
+    private TransaccionController transaccionController;
 
-    public MenuUsuarioView(Usuario usuario, ClienteController clienteController, CuentaController cuentaController) {
+    public MenuUsuarioView(Usuario usuario, ClienteController clienteController, CuentaController cuentaController,
+            TransaccionController transaccionController) {
         super("Menú de Usuario");
         this.usuario = usuario;
         this.clienteController = clienteController;
         this.cuentaController = cuentaController;
+        this.transaccionController = transaccionController;
 
         // Crear la barra de menú
         JMenuBar menuBar = new JMenuBar();
@@ -91,7 +95,8 @@ public class MenuUsuarioView extends BaseView {
                 case "Crear Cliente":
                     button.addActionListener(e -> {
                         dispose();
-                        new RegistroClienteView(clienteController, usuario, cuentaController).setVisible(true);
+                        new RegistroClienteView(clienteController, usuario, cuentaController,
+                                transaccionController).setVisible(true);
                     });
                     break;
 
@@ -104,7 +109,8 @@ public class MenuUsuarioView extends BaseView {
                                     JOptionPane.ERROR_MESSAGE);
                         } else {
                             dispose();
-                            new ListaClientesView(clienteController, usuario, cuentaController).setVisible(true);
+                            new ListaClientesView(clienteController, usuario, cuentaController,
+                                    transaccionController).setVisible(true);
                         }
                     });
                     break;
@@ -118,7 +124,8 @@ public class MenuUsuarioView extends BaseView {
                                     JOptionPane.ERROR_MESSAGE);
                         } else {
                             dispose();
-                            new CrearCuentaView(cuentaController, clienteController, usuario).setVisible(true);
+                            new CrearCuentaView(cuentaController, clienteController,
+                                    transaccionController, usuario).setVisible(true);
                         }
                     });
                     break;
@@ -137,7 +144,8 @@ public class MenuUsuarioView extends BaseView {
                                     JOptionPane.ERROR_MESSAGE);
                         } else {
                             dispose();
-                            new ListaCuentaView(cuentaController, clienteController, usuario).setVisible(true);
+                            new ListaCuentaView(cuentaController, clienteController,
+                                    transaccionController, usuario).setVisible(true);
                         }
                     });
                     break;
@@ -150,11 +158,9 @@ public class MenuUsuarioView extends BaseView {
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE);
                         } else {
-                            // Navegar a la vista de depósitos cuando la implementes
-                            JOptionPane.showMessageDialog(null,
-                                    "Funcionalidad no implementada aún: Depósitos",
-                                    "En desarrollo",
-                                    JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
+                            new DepositoView(cuentaController, clienteController, transaccionController, usuario)
+                                    .setVisible(true);
                         }
                     });
                     break;
@@ -214,7 +220,8 @@ public class MenuUsuarioView extends BaseView {
                     button.addActionListener(e -> {
                         dispose();
                         Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
-                        new MainView(usuarioPorDefecto, clienteController, cuentaController).setVisible(true);
+                        new MainView(usuarioPorDefecto, clienteController, cuentaController, transaccionController)
+                                .setVisible(true);
                     });
                     break;
 

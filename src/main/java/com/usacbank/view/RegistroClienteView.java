@@ -2,6 +2,7 @@ package com.usacbank.view;
 
 import com.usacbank.controller.ClienteController;
 import com.usacbank.controller.CuentaController;
+import com.usacbank.controller.TransaccionController;
 import com.usacbank.model.Cliente;
 import com.usacbank.model.Usuario;
 
@@ -14,13 +15,15 @@ public class RegistroClienteView extends BaseView {
     private ClienteController clienteController;
     private Usuario usuario;
     private CuentaController cuentaController;
+    private TransaccionController transaccionController;
 
     public RegistroClienteView(ClienteController clienteController, Usuario usuario,
-            CuentaController cuentaController) {
+            CuentaController cuentaController, TransaccionController transaccionController) {
         super("Registro de Cliente");
         this.clienteController = clienteController;
         this.usuario = usuario;
         this.cuentaController = cuentaController;
+        this.transaccionController = transaccionController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -161,7 +164,8 @@ public class RegistroClienteView extends BaseView {
 
                         // Cambiar a la vista de lista de clientes
                         dispose();
-                        new ListaClientesView(clienteController, usuario, cuentaController).setVisible(true);
+                        new ListaClientesView(clienteController, usuario, cuentaController, transaccionController)
+                                .setVisible(true);
                         break;
 
                     case 1: // CUI duplicado
@@ -184,7 +188,7 @@ public class RegistroClienteView extends BaseView {
         // Acción para el botón volver
         volverButton.addActionListener(e -> {
             dispose();
-            new MenuUsuarioView(usuario, clienteController, cuentaController).setVisible(true);
+            new MenuUsuarioView(usuario, clienteController, cuentaController, transaccionController).setVisible(true);
         });
 
         buttonPanel.add(crearButton);

@@ -2,6 +2,7 @@ package com.usacbank.view;
 
 import com.usacbank.controller.CuentaController;
 import com.usacbank.controller.ClienteController;
+import com.usacbank.controller.TransaccionController;
 import com.usacbank.model.Cliente;
 import com.usacbank.model.Cuenta;
 import com.usacbank.model.Usuario;
@@ -18,12 +19,15 @@ import java.util.List;
 public class ListaCuentaView extends BaseView {
     private CuentaController cuentaController;
     private ClienteController clienteController;
+    private TransaccionController transaccionController;
     private Usuario usuario;
 
-    public ListaCuentaView(CuentaController cuentaController, ClienteController clienteController, Usuario usuario) {
+    public ListaCuentaView(CuentaController cuentaController, ClienteController clienteController,
+            TransaccionController transaccionController, Usuario usuario) {
         super("Ver Cuentas");
         this.cuentaController = cuentaController;
         this.clienteController = clienteController;
+        this.transaccionController = transaccionController;
         this.usuario = usuario;
 
         // Contenedor principal con margen
@@ -221,7 +225,8 @@ public class ListaCuentaView extends BaseView {
         // Acción para el botón crear
         crearButton.addActionListener(e -> {
             dispose();
-            new CrearCuentaView(cuentaController, clienteController, usuario).setVisible(true);
+            new CrearCuentaView(cuentaController, clienteController,
+                    transaccionController, usuario).setVisible(true);
         });
 
         // Acción para el botón buscar
@@ -289,7 +294,8 @@ public class ListaCuentaView extends BaseView {
         // Acción para el botón volver
         volverButton.addActionListener(e -> {
             dispose();
-            new MenuUsuarioView(usuario, clienteController, cuentaController).setVisible(true);
+            new MenuUsuarioView(usuario, clienteController, cuentaController,
+                    transaccionController).setVisible(true);
         });
 
         // Modificar el panel de botones para incluir los tres botones

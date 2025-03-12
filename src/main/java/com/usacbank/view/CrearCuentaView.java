@@ -2,6 +2,7 @@ package com.usacbank.view;
 
 import com.usacbank.controller.CuentaController;
 import com.usacbank.controller.ClienteController;
+import com.usacbank.controller.TransaccionController;
 import com.usacbank.model.Cliente;
 import com.usacbank.model.Cuenta;
 import com.usacbank.model.Usuario;
@@ -15,12 +16,15 @@ import java.util.List;
 public class CrearCuentaView extends BaseView {
     private CuentaController cuentaController;
     private ClienteController clienteController;
+    private TransaccionController transaccionController;
     private Usuario usuario;
 
-    public CrearCuentaView(CuentaController cuentaController, ClienteController clienteController, Usuario usuario) {
+    public CrearCuentaView(CuentaController cuentaController, ClienteController clienteController,
+            TransaccionController transaccionController, Usuario usuario) {
         super("Crear Cuenta");
         this.cuentaController = cuentaController;
         this.clienteController = clienteController;
+        this.transaccionController = transaccionController;
         this.usuario = usuario;
 
         // Contenedor principal con margen
@@ -157,7 +161,8 @@ public class CrearCuentaView extends BaseView {
                                     JOptionPane.INFORMATION_MESSAGE);
                             // Redirigir a la lista de cuentas
                             dispose();
-                            new ListaCuentaView(cuentaController, clienteController, usuario).setVisible(true);
+                            new ListaCuentaView(cuentaController, clienteController,
+                                    transaccionController, usuario).setVisible(true);
                             break;
                         case 1: // Límite excedido
                             JOptionPane.showMessageDialog(null,
@@ -176,7 +181,8 @@ public class CrearCuentaView extends BaseView {
         // Acción para el botón volver
         volverButton.addActionListener(e -> {
             dispose();
-            new MenuUsuarioView(usuario, clienteController, cuentaController).setVisible(true);
+            new MenuUsuarioView(usuario, clienteController, cuentaController,
+                    transaccionController).setVisible(true);
         });
 
         buttonPanel.add(crearButton);

@@ -2,6 +2,7 @@ package com.usacbank.view;
 
 import com.usacbank.controller.ClienteController;
 import com.usacbank.controller.CuentaController;
+import com.usacbank.controller.TransaccionController;
 import com.usacbank.model.Cliente;
 import com.usacbank.model.Usuario;
 
@@ -14,12 +15,15 @@ public class ListaClientesView extends BaseView {
     private ClienteController clienteController;
     private Usuario usuario;
     private CuentaController cuentaController;
+    private TransaccionController transaccionController;
 
-    public ListaClientesView(ClienteController clienteController, Usuario usuario, CuentaController cuentaController) {
+    public ListaClientesView(ClienteController clienteController, Usuario usuario,
+            CuentaController cuentaController, TransaccionController transaccionController) {
         super("Lista de Clientes");
         this.clienteController = clienteController;
         this.usuario = usuario;
         this.cuentaController = cuentaController;
+        this.transaccionController = transaccionController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -121,7 +125,8 @@ public class ListaClientesView extends BaseView {
 
         crearButton.addActionListener(e -> {
             dispose();
-            new RegistroClienteView(clienteController, usuario, cuentaController).setVisible(true);
+            new RegistroClienteView(clienteController, usuario, cuentaController,
+                    transaccionController).setVisible(true);
         });
 
         // Botón para volver al menú
@@ -137,7 +142,8 @@ public class ListaClientesView extends BaseView {
 
         volverButton.addActionListener(e -> {
             dispose();
-            new MenuUsuarioView(usuario, clienteController, cuentaController).setVisible(true);
+            new MenuUsuarioView(usuario, clienteController, cuentaController,
+                    transaccionController).setVisible(true);
         });
 
         buttonPanel.add(crearButton);

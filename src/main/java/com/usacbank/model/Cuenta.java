@@ -1,8 +1,5 @@
 package com.usacbank.model;
 
-import java.util.Calendar;
-import java.util.Random;
-
 public class Cuenta {
     private static int contadorCuentas = 1; // Comienza en 1 para generar 20BB251, 20BB252...
     private String id;

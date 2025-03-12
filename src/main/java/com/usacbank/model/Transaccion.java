@@ -1,34 +1,40 @@
 package com.usacbank.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Transaccion {
     private static int contadorTransacciones = 1;
-    private String id;
-    private String tipo;
+    private int id;
+    private Cuenta cuenta;
     private double monto;
-    private LocalDateTime fecha;
+    private String tipo; // "DEPOSITO" o "RETIRO"
+    private Date fecha;
 
-    public Transaccion(String tipo, double monto) {
-        this.id = "TRX" + (contadorTransacciones++);
-        this.tipo = tipo;
+    public Transaccion(Cuenta cuenta, double monto, String tipo) {
+        this.id = contadorTransacciones++;
+        this.cuenta = cuenta;
         this.monto = monto;
-        this.fecha = LocalDateTime.now();
+        this.tipo = tipo;
+        this.fecha = new Date();
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public String getTipo() {
-        return tipo;
+    public Cuenta getCuenta() {
+        return cuenta;
     }
 
     public double getMonto() {
         return monto;
     }
 
-    public LocalDateTime getFecha() {
+    public String getTipo() {
+        return tipo;
+    }
+
+    public Date getFecha() {
         return fecha;
     }
 }
