@@ -265,7 +265,7 @@ public class GeneracionReportesView extends BaseView {
 
             // Registrar en bitácora
             System.out.println(new Bitacora(
-                    "AdministradorIPC1A",
+                    "AdministradorIPC1B",
                     "Generación de reportes",
                     "Éxito",
                     "Reporte de " + tipoReporte + " generado para el cliente con CUI: " + cui));
@@ -299,7 +299,7 @@ public class GeneracionReportesView extends BaseView {
         } catch (Exception ex) {
             // Registrar error en bitácora
             System.out.println(new Bitacora(
-                    "AdministradorIPC1A",
+                    "AdministradorIPC1B",
                     "Generación de reportes",
                     "Error",
                     "Error al generar reporte de " + tipoReporte + " para el cliente con CUI: " + cui + ". Detalles: "

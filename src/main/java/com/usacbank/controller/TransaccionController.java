@@ -187,8 +187,4 @@ public class TransaccionController {
         }
         return retiros;
     }
-
-    // Ya no necesitamos el método generarIdTransaccion() ya que la clase
-    // Transaccion
-    // maneja su propio contador interno
 }
