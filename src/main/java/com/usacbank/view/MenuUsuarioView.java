@@ -267,28 +267,28 @@ public class MenuUsuarioView extends BaseView {
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Agregar los datos del estudiante
-        JLabel nombreLabel = new JLabel("Nombre: Christian Javier Rivas Arreaga");
+        JLabel nombreLabel = new JLabel("Christian Javier Rivas Arreaga");
         nombreLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         nombreLabel.setForeground(Color.WHITE); // Texto blanco
         nombreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel carnetLabel = new JLabel("Carnet: 202303204");
+        JLabel carnetLabel = new JLabel("202303204");
         carnetLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         carnetLabel.setForeground(Color.WHITE); // Texto blanco
         carnetLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel seccionLabel = new JLabel("Sección: B Laboratorio IPC1");
+        JLabel seccionLabel = new JLabel("Laboratorio IPC1 Sección B");
         seccionLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         seccionLabel.setForeground(Color.WHITE); // Texto blanco
         seccionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         contentPanel.add(titleLabel);
         contentPanel.add(Box.createVerticalStrut(20));
+        contentPanel.add(seccionLabel);
+        contentPanel.add(Box.createVerticalStrut(10));
         contentPanel.add(nombreLabel);
         contentPanel.add(Box.createVerticalStrut(10));
         contentPanel.add(carnetLabel);
-        contentPanel.add(Box.createVerticalStrut(10));
-        contentPanel.add(seccionLabel);
 
         datosEstudianteFrame.add(contentPanel);
         datosEstudianteFrame.setVisible(true);
