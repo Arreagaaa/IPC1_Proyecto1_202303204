@@ -5,11 +5,14 @@ import com.usacbank.controller.ClienteController;
 import com.usacbank.controller.TransaccionController;
 import com.usacbank.controller.ReporteController;
 import com.usacbank.model.Usuario;
+import com.usacbank.model.Cliente;
+import com.usacbank.model.Bitacora;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.io.File;
 
 public class GeneracionReportesView extends BaseView {
@@ -18,6 +21,8 @@ public class GeneracionReportesView extends BaseView {
     private TransaccionController transaccionController;
     private ReporteController reporteController;
     private Usuario usuario;
+    private JTextField cuiField;
+    private JComboBox<Cliente> clienteComboBox;
 
     public GeneracionReportesView(ClienteController clienteController, CuentaController cuentaController,
             TransaccionController transaccionController, Usuario usuario) {
@@ -62,19 +67,46 @@ public class GeneracionReportesView extends BaseView {
         // Panel de búsqueda de CUI
         JPanel searchPanel = new JPanel();
         searchPanel.setOpaque(false);
-        searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.Y_AXIS));
         searchPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        searchPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 10, 50));
+
+        // Panel para ingresar CUI
+        JPanel cuiPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        cuiPanel.setOpaque(false);
 
         JLabel cuiLabel = new JLabel("Ingrese CUI del cliente:");
         cuiLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         cuiLabel.setForeground(Color.WHITE);
 
-        JTextField cuiField = new JTextField();
+        cuiField = new JTextField(15);
         cuiField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         cuiField.setPreferredSize(new Dimension(200, 30));
 
-        searchPanel.add(cuiLabel);
-        searchPanel.add(cuiField);
+        cuiPanel.add(cuiLabel);
+        cuiPanel.add(cuiField);
+
+        // Panel para el ComboBox
+        JPanel comboPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        comboPanel.setOpaque(false);
+
+        JLabel clienteLabel = new JLabel("O seleccione un cliente:");
+        clienteLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        clienteLabel.setForeground(Color.WHITE);
+
+        clienteComboBox = new JComboBox<>();
+        clienteComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        clienteComboBox.setPreferredSize(new Dimension(300, 30));
+        clienteComboBox.setBackground(Color.WHITE);
+
+        // Cargar los clientes en el ComboBox
+        cargarClientes();
+
+        comboPanel.add(clienteLabel);
+        comboPanel.add(clienteComboBox);
+
+        searchPanel.add(cuiPanel);
+        searchPanel.add(comboPanel);
 
         // Panel de botones de reportes
         JPanel reportButtonsPanel = new JPanel();
@@ -107,6 +139,27 @@ public class GeneracionReportesView extends BaseView {
         volverButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         buttonPanel.add(volverButton);
+
+        // Sincronizar ComboBox con TextField
+        clienteComboBox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                Cliente clienteSeleccionado = (Cliente) clienteComboBox.getSelectedItem();
+                if (clienteSeleccionado != null) {
+                    cuiField.setText(clienteSeleccionado.getCui());
+                }
+            }
+        });
+
+        // Sincronizar TextField con ComboBox cuando se presione Enter
+        cuiField.addActionListener(e -> {
+            String cui = cuiField.getText().trim();
+            if (!cui.isEmpty()) {
+                Cliente cliente = clienteController.getClientePorCui(cui);
+                if (cliente != null) {
+                    clienteComboBox.setSelectedItem(cliente);
+                }
+            }
+        });
 
         // Acción para el botón de generar reporte de transacciones
         transaccionesButton.addActionListener(new ActionListener() {
@@ -150,6 +203,29 @@ public class GeneracionReportesView extends BaseView {
         backgroundPanel.add(mainContainer, BorderLayout.CENTER);
     }
 
+    private void cargarClientes() {
+        DefaultComboBoxModel<Cliente> model = new DefaultComboBoxModel<>();
+        // Añadir un elemento vacío al inicio
+        model.addElement(null);
+        // Añadir todos los clientes
+        for (Cliente cliente : clienteController.getClientes()) {
+            model.addElement(cliente);
+        }
+        clienteComboBox.setModel(model);
+        clienteComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+                    boolean cellHasFocus) {
+                if (value == null) {
+                    return super.getListCellRendererComponent(list, "-- Seleccione un cliente --", index, isSelected,
+                            cellHasFocus);
+                }
+                return super.getListCellRendererComponent(list, ((Cliente) value).toString(), index, isSelected,
+                        cellHasFocus);
+            }
+        });
+    }
+
     private JButton createReportButton(String title) {
         JButton button = new JButton(title);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -165,7 +241,7 @@ public class GeneracionReportesView extends BaseView {
     private void generarReporte(String cui, String tipoReporte) {
         if (cui.isEmpty()) {
             JOptionPane.showMessageDialog(null,
-                    "Debe ingresar un CUI",
+                    "Debe ingresar un CUI o seleccionar un cliente",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
@@ -186,6 +262,13 @@ public class GeneracionReportesView extends BaseView {
                 default:
                     throw new IllegalArgumentException("Tipo de reporte desconocido: " + tipoReporte);
             }
+
+            // Registrar en bitácora
+            System.out.println(new Bitacora(
+                    "AdministradorIPC1A",
+                    "Generación de reportes",
+                    "Éxito",
+                    "Reporte de " + tipoReporte + " generado para el cliente con CUI: " + cui));
 
             int option = JOptionPane.showConfirmDialog(null,
                     "Reporte generado exitosamente: " + filename + "\n¿Desea abrir el archivo ahora?",
@@ -214,6 +297,14 @@ public class GeneracionReportesView extends BaseView {
                 }
             }
         } catch (Exception ex) {
+            // Registrar error en bitácora
+            System.out.println(new Bitacora(
+                    "AdministradorIPC1A",
+                    "Generación de reportes",
+                    "Error",
+                    "Error al generar reporte de " + tipoReporte + " para el cliente con CUI: " + cui + ". Detalles: "
+                            + ex.getMessage()));
+
             JOptionPane.showMessageDialog(null,
                     "Error al generar reporte: " + ex.getMessage(),
                     "Error",

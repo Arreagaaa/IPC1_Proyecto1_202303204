@@ -4,6 +4,7 @@ import com.usacbank.controller.ClienteController;
 import com.usacbank.controller.CuentaController;
 import com.usacbank.controller.TransaccionController;
 import com.usacbank.model.Usuario;
+import com.usacbank.model.Bitacora;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;

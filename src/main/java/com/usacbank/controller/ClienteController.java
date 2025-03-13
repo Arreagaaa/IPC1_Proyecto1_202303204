@@ -1,6 +1,7 @@
 package com.usacbank.controller;
 
 import com.usacbank.model.Cliente;
+import com.usacbank.model.Bitacora;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,16 +24,36 @@ public class ClienteController {
     public int crearCliente(Cliente cliente) {
         // Verificar si ya existe un cliente con el mismo CUI
         if (existeCUI(cliente.getCui())) {
+            // Registrar en bitácora - Error por CUI duplicado
+            System.out.println(new Bitacora(
+                    "AdministradorIPC1B",
+                    "Registro de cliente",
+                    "Error",
+                    "CUI duplicado: " + cliente.getCui() + ". No se pudo registrar al cliente."));
             return 1; // CUI duplicado
         }
 
         // Verificar si se ha alcanzado el límite de clientes
         if (clientes.size() >= LIMITE_CLIENTES) {
+            // Registrar en bitácora - Error por límite alcanzado
+            System.out.println(new Bitacora(
+                    "AdministradorIPC1B",
+                    "Registro de cliente",
+                    "Error",
+                    "Límite de clientes alcanzado (" + LIMITE_CLIENTES + "). No se pudo registrar al cliente."));
             return 2; // Límite alcanzado
         }
 
         // Si no hay problemas, agregar el cliente
         clientes.add(cliente);
+
+        // Registrar en bitácora - Éxito
+        System.out.println(new Bitacora(
+                "AdministradorIPC1B",
+                "Registro de cliente",
+                "Éxito",
+                "Cliente " + cliente.getNombre() + " " + cliente.getApellido() + " con CUI " + cliente.getCui()
+                        + " registrado."));
         return 0; // Éxito
     }
 
@@ -73,9 +94,21 @@ public class ClienteController {
     public Cliente getClientePorCui(String cui) {
         for (Cliente cliente : getClientes()) {
             if (cliente.getCui().equals(cui)) {
+                // Registrar en bitácora - Cliente encontrado
+                System.out.println(new Bitacora(
+                        "AdministradorIPC1B",
+                        "Búsqueda de cliente",
+                        "Éxito",
+                        "Cliente encontrado con CUI: " + cui));
                 return cliente;
             }
         }
+        // Registrar en bitácora - Cliente no encontrado
+        System.out.println(new Bitacora(
+                "AdministradorIPC1B",
+                "Búsqueda de cliente",
+                "Error",
+                "No se encontró cliente con CUI: " + cui));
         return null;
     }
 

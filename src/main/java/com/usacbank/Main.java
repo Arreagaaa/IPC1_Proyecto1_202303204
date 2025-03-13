@@ -1,13 +1,21 @@
 package com.usacbank;
 
+import com.usacbank.model.Usuario;
+import com.usacbank.model.Bitacora;
 import com.usacbank.controller.ClienteController;
 import com.usacbank.controller.CuentaController;
 import com.usacbank.controller.TransaccionController;
-import com.usacbank.model.Usuario;
 import com.usacbank.view.MainView;
 
 public class Main {
     public static void main(String[] args) {
+        // Registrar inicio del sistema en la bitácora
+        System.out.println(new Bitacora(
+                "Sistema",
+                "Inicio de aplicación",
+                "Éxito",
+                "USAC BANK iniciado correctamente."));
+
         // Crear el usuario por defecto (administrador)
         Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
 

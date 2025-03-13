@@ -4,6 +4,7 @@ import com.usacbank.controller.ClienteController;
 import com.usacbank.controller.CuentaController;
 import com.usacbank.controller.TransaccionController;
 import com.usacbank.model.Usuario;
+import com.usacbank.model.Bitacora;
 
 import javax.swing.*;
 import java.awt.*;
@@ -240,6 +241,21 @@ public class MenuUsuarioView extends BaseView {
 
         // Acción para mostrar los datos del estudiante
         datosEstudianteItem.addActionListener(e -> mostrarDatosEstudiante());
+
+        // Acción para generar la bitácora
+        generacionBitacoraItem.addActionListener(e -> {
+            System.out.println(new Bitacora(
+                    "AdministradorIPC1B",
+                    "Generación de bitácora",
+                    "Éxito",
+                    "Bitácora generada correctamente."));
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Bitácora generada correctamente",
+                    "Generación de Bitácora",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
     }
 
     private void mostrarDatosEstudiante() {
@@ -292,5 +308,11 @@ public class MenuUsuarioView extends BaseView {
 
         datosEstudianteFrame.add(contentPanel);
         datosEstudianteFrame.setVisible(true);
+
+        System.out.println(new Bitacora(
+                "AdministradorIPC1B",
+                "Consulta de datos del estudiante",
+                "Éxito",
+                "Nombre: Christian Javier Rivas Arreaga, Carnet: 202303204, Curso: Laboratorio IPC1 Sección B"));
     }
 }
