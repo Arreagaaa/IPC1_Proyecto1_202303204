@@ -203,11 +203,9 @@ public class MenuUsuarioView extends BaseView {
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE);
                         } else {
-                            // Navegar a la vista de reportes cuando la implementes
-                            JOptionPane.showMessageDialog(null,
-                                    "Funcionalidad no implementada aún: Generación de Reportes",
-                                    "En desarrollo",
-                                    JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
+                            new GeneracionReportesView(clienteController, cuentaController,
+                                    transaccionController, usuario).setVisible(true);
                         }
                     });
                     break;
