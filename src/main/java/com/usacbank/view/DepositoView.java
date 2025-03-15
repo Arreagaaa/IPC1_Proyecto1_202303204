@@ -16,19 +16,9 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 public class DepositoView extends BaseView {
-    private CuentaController cuentaController;
-    private ClienteController clienteController;
-    private TransaccionController transaccionController;
-    private Usuario usuario;
-
     public DepositoView(CuentaController cuentaController, ClienteController clienteController,
             TransaccionController transaccionController, Usuario usuario) {
         super("Depósito");
-        this.cuentaController = cuentaController;
-        this.clienteController = clienteController;
-        this.transaccionController = transaccionController;
-        this.usuario = usuario;
-
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
         mainContainer.setOpaque(false);
@@ -202,7 +192,7 @@ public class DepositoView extends BaseView {
         });
 
         // Acción para el botón volver
-        volverButton.addActionListener(e -> {
+        volverButton.addActionListener(_ -> {
             dispose();
             new MenuUsuarioView(usuario, clienteController, cuentaController, transaccionController).setVisible(true);
         });

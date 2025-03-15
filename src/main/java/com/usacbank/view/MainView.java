@@ -4,7 +4,6 @@ import com.usacbank.controller.ClienteController;
 import com.usacbank.controller.CuentaController;
 import com.usacbank.controller.TransaccionController;
 import com.usacbank.model.Usuario;
-import com.usacbank.model.Bitacora;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -17,18 +16,10 @@ public class MainView extends BaseView {
     private JButton pressButton;
     private Timer animationTimer;
     private float alpha = 1.0f;
-    private Usuario usuarioPorDefecto;
-    private ClienteController clienteController;
-    private CuentaController cuentaController;
-    private TransaccionController transaccionController;
 
     public MainView(Usuario usuarioPorDefecto, ClienteController clienteController, CuentaController cuentaController,
             TransaccionController transaccionController) {
         super("USAC BANK");
-        this.usuarioPorDefecto = usuarioPorDefecto;
-        this.clienteController = clienteController;
-        this.cuentaController = cuentaController;
-        this.transaccionController = transaccionController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();

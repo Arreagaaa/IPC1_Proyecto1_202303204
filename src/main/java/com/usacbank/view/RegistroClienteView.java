@@ -12,18 +12,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RegistroClienteView extends BaseView {
-    private ClienteController clienteController;
-    private Usuario usuario;
-    private CuentaController cuentaController;
-    private TransaccionController transaccionController;
 
     public RegistroClienteView(ClienteController clienteController, Usuario usuario,
             CuentaController cuentaController, TransaccionController transaccionController) {
         super("Registro de Cliente");
-        this.clienteController = clienteController;
-        this.usuario = usuario;
-        this.cuentaController = cuentaController;
-        this.transaccionController = transaccionController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -186,7 +178,7 @@ public class RegistroClienteView extends BaseView {
         });
 
         // Acción para el botón volver
-        volverButton.addActionListener(e -> {
+        volverButton.addActionListener(_ -> {
             dispose();
             new MenuUsuarioView(usuario, clienteController, cuentaController, transaccionController).setVisible(true);
         });

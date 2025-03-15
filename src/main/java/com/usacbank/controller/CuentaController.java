@@ -53,7 +53,7 @@ public class CuentaController {
                     + cuenta.getSaldo());
         }
 
-        return 0; // Éxito
+        return 0;
     }
 
     public List<Cuenta> getCuentas() {

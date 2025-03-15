@@ -14,19 +14,9 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class CrearCuentaView extends BaseView {
-    private CuentaController cuentaController;
-    private ClienteController clienteController;
-    private TransaccionController transaccionController;
-    private Usuario usuario;
-
     public CrearCuentaView(CuentaController cuentaController, ClienteController clienteController,
             TransaccionController transaccionController, Usuario usuario) {
         super("Crear Cuenta");
-        this.cuentaController = cuentaController;
-        this.clienteController = clienteController;
-        this.transaccionController = transaccionController;
-        this.usuario = usuario;
-
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
         mainContainer.setOpaque(false);
@@ -63,8 +53,7 @@ public class CrearCuentaView extends BaseView {
         clienteLabel.setForeground(Color.WHITE);
         clienteLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // ComboBox con renderizador personalizado para mostrar cuántas cuentas tiene
-        // cada cliente
+        // ComboBox con renderizador personalizado para mostrar cuántas cuentas tiene cada cliente
         JComboBox<Cliente> clienteComboBox = new JComboBox<>();
 
         // Personalizar el renderizador del ComboBox
@@ -179,7 +168,7 @@ public class CrearCuentaView extends BaseView {
         });
 
         // Acción para el botón volver
-        volverButton.addActionListener(e -> {
+        volverButton.addActionListener(_ -> {
             dispose();
             new MenuUsuarioView(usuario, clienteController, cuentaController,
                     transaccionController).setVisible(true);

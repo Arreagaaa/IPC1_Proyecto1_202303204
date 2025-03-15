@@ -11,18 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RegistroUsuarioView extends BaseView {
-    private Usuario usuarioPorDefecto;
-    private ClienteController clienteController;
-    private CuentaController cuentaController;
-    private TransaccionController transaccionController;
-
     public RegistroUsuarioView(Usuario usuarioPorDefecto, ClienteController clienteController,
             CuentaController cuentaController, TransaccionController transaccionController) {
         super("Registro de Usuario");
-        this.usuarioPorDefecto = usuarioPorDefecto;
-        this.clienteController = clienteController;
-        this.cuentaController = cuentaController;
-        this.transaccionController = transaccionController;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();

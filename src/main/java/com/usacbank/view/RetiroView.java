@@ -16,18 +16,9 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 public class RetiroView extends BaseView {
-    private CuentaController cuentaController;
-    private ClienteController clienteController;
-    private TransaccionController transaccionController;
-    private Usuario usuario;
-
     public RetiroView(CuentaController cuentaController, ClienteController clienteController,
             TransaccionController transaccionController, Usuario usuario) {
         super("Retiro");
-        this.cuentaController = cuentaController;
-        this.clienteController = clienteController;
-        this.transaccionController = transaccionController;
-        this.usuario = usuario;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -253,7 +244,7 @@ public class RetiroView extends BaseView {
         });
 
         // Acción para el botón volver
-        volverButton.addActionListener(e -> {
+        volverButton.addActionListener(_ -> {
             dispose();
             new MenuUsuarioView(usuario, clienteController, cuentaController, transaccionController).setVisible(true);
         });

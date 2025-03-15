@@ -9,8 +9,10 @@ public class Transaccion {
     private Cuenta cuenta;
     private Date fecha;
     private String detalle;
-    private double montoDebito; // Para retiros
-    private double montoCredito; // Para depósitos
+    // Para retiros
+    private double montoDebito;
+    // Para depósitos
+    private double montoCredito;
     private double saldoResultante;
 
     public Transaccion(Cuenta cuenta, double monto, String tipo) {

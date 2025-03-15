@@ -1,7 +1,7 @@
 package com.usacbank.model;
 
 public class Cuenta {
-    private static int contadorCuentas = 1; // Comienza en 1 para generar 20BB251, 20BB252...
+    private static int contadorCuentas = 1;
     private String id;
     private Cliente cliente;
     private double saldo;
@@ -13,7 +13,6 @@ public class Cuenta {
     }
 
     private String generarId() {
-        // Formato: 20BB25X donde X es un contador secuencial
         return "20BB25" + contadorCuentas++;
     }
 

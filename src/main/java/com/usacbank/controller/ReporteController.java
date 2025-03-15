@@ -3,7 +3,7 @@ package com.usacbank.controller;
 import com.usacbank.model.Cliente;
 import com.usacbank.model.Cuenta;
 import com.usacbank.model.Transaccion;
-import com.usacbank.model.Bitacora; // Añadir importación de Bitacora
+import com.usacbank.model.Bitacora;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -37,8 +37,6 @@ public class ReporteController {
     }
 
     public String generarReporteTransacciones(String cui) throws Exception {
-        // Código existente...
-
         try {
             // Obtener el cliente por CUI
             Cliente cliente = clienteController.getClientePorCui(cui);
@@ -201,13 +199,11 @@ public class ReporteController {
                     "Generación de reportes",
                     "Error",
                     "Error al generar reporte de transacciones para CUI " + cui + ": " + e.getMessage()));
-            throw e; // Re-lanzar la excepción para manejarla en la capa superior
+            throw e;
         }
     }
 
     public String generarReporteDepositos(String cui) throws Exception {
-        // Código existente...
-
         try {
             // Obtener el cliente por CUI
             Cliente cliente = clienteController.getClientePorCui(cui);
@@ -359,13 +355,11 @@ public class ReporteController {
                     "Generación de reportes",
                     "Error",
                     "Error al generar reporte de depósitos para CUI " + cui + ": " + e.getMessage()));
-            throw e; // Re-lanzar la excepción para manejarla en la capa superior
+            throw e;
         }
     }
 
     public String generarReporteRetiros(String cui) throws Exception {
-        // Código existente...
-
         try {
             // Obtener el cliente por CUI
             Cliente cliente = clienteController.getClientePorCui(cui);
@@ -517,7 +511,7 @@ public class ReporteController {
                     "Generación de reportes",
                     "Error",
                     "Error al generar reporte de retiros para CUI " + cui + ": " + e.getMessage()));
-            throw e; // Re-lanzar la excepción para manejarla en la capa superior
+            throw e;
         }
     }
 }

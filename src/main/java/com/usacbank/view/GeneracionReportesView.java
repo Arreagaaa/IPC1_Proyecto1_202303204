@@ -17,10 +17,7 @@ import java.io.File;
 
 public class GeneracionReportesView extends BaseView {
     private ClienteController clienteController;
-    private CuentaController cuentaController;
-    private TransaccionController transaccionController;
     private ReporteController reporteController;
-    private Usuario usuario;
     private JTextField cuiField;
     private JComboBox<Cliente> clienteComboBox;
 
@@ -28,9 +25,6 @@ public class GeneracionReportesView extends BaseView {
             TransaccionController transaccionController, Usuario usuario) {
         super("Generación de Reportes");
         this.clienteController = clienteController;
-        this.cuentaController = cuentaController;
-        this.transaccionController = transaccionController;
-        this.usuario = usuario;
         this.reporteController = new ReporteController(clienteController, cuentaController, transaccionController);
 
         // Contenedor principal con margen
@@ -151,7 +145,7 @@ public class GeneracionReportesView extends BaseView {
         });
 
         // Sincronizar TextField con ComboBox cuando se presione Enter
-        cuiField.addActionListener(e -> {
+        cuiField.addActionListener(_ -> {
             String cui = cuiField.getText().trim();
             if (!cui.isEmpty()) {
                 Cliente cliente = clienteController.getClientePorCui(cui);
@@ -186,7 +180,7 @@ public class GeneracionReportesView extends BaseView {
         });
 
         // Acción para el botón volver
-        volverButton.addActionListener(e -> {
+        volverButton.addActionListener(_ -> {
             dispose();
             new MenuUsuarioView(usuario, clienteController, cuentaController, transaccionController).setVisible(true);
         });
@@ -217,7 +211,7 @@ public class GeneracionReportesView extends BaseView {
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
                     boolean cellHasFocus) {
                 if (value == null) {
-                    return super.getListCellRendererComponent(list, "-- Seleccione un cliente --", index, isSelected,
+                    return super.getListCellRendererComponent(list, " ", index, isSelected,
                             cellHasFocus);
                 }
                 return super.getListCellRendererComponent(list, ((Cliente) value).toString(), index, isSelected,

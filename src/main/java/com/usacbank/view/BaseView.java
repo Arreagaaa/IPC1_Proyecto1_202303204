@@ -42,7 +42,6 @@ public class BaseView extends JFrame {
                     Graphics2D g2d = (Graphics2D) g;
                     g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
-                    // Añadir una capa semitransparente para mejorar la legibilidad del texto
                     g2d.setColor(new Color(0, 0, 0, 0.3f));
                     g2d.fillRect(0, 0, getWidth(), getHeight());
                 } else {

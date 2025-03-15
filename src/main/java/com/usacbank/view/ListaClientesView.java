@@ -12,19 +12,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class ListaClientesView extends BaseView {
-    private ClienteController clienteController;
-    private Usuario usuario;
-    private CuentaController cuentaController;
-    private TransaccionController transaccionController;
-
     public ListaClientesView(ClienteController clienteController, Usuario usuario,
             CuentaController cuentaController, TransaccionController transaccionController) {
         super("Lista de Clientes");
-        this.clienteController = clienteController;
-        this.usuario = usuario;
-        this.cuentaController = cuentaController;
-        this.transaccionController = transaccionController;
-
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
         mainContainer.setOpaque(false);
@@ -123,7 +113,7 @@ public class ListaClientesView extends BaseView {
             crearButton.setText("Límite de Clientes Alcanzado");
         }
 
-        crearButton.addActionListener(e -> {
+        crearButton.addActionListener(_ -> {
             dispose();
             new RegistroClienteView(clienteController, usuario, cuentaController,
                     transaccionController).setVisible(true);
@@ -140,7 +130,7 @@ public class ListaClientesView extends BaseView {
         volverButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         volverButton.setPreferredSize(new Dimension(200, 40));
 
-        volverButton.addActionListener(e -> {
+        volverButton.addActionListener(_ -> {
             dispose();
             new MenuUsuarioView(usuario, clienteController, cuentaController,
                     transaccionController).setVisible(true);

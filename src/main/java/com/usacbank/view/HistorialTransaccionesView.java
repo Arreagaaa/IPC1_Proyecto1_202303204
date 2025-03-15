@@ -16,23 +16,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class HistorialTransaccionesView extends BaseView {
-    private CuentaController cuentaController;
-    private ClienteController clienteController;
-    private TransaccionController transaccionController;
-    private Usuario usuario;
-
     public HistorialTransaccionesView(CuentaController cuentaController, ClienteController clienteController,
             TransaccionController transaccionController, Usuario usuario) {
         super("Historial de Transacciones");
-        this.cuentaController = cuentaController;
-        this.clienteController = clienteController;
-        this.transaccionController = transaccionController;
-        this.usuario = usuario;
-
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
         mainContainer.setOpaque(false);
@@ -322,7 +311,7 @@ public class HistorialTransaccionesView extends BaseView {
         buscarIdButton.addActionListener(mostrarTransacciones);
 
         // Acción para el botón volver
-        volverButton.addActionListener(e -> {
+        volverButton.addActionListener(_ -> {
             dispose();
             new MenuUsuarioView(usuario, clienteController, cuentaController, transaccionController).setVisible(true);
         });

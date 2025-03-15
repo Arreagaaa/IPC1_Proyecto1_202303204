@@ -10,18 +10,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MenuUsuarioView extends BaseView {
-    private Usuario usuario;
-    private ClienteController clienteController;
-    private CuentaController cuentaController;
-    private TransaccionController transaccionController;
-
     public MenuUsuarioView(Usuario usuario, ClienteController clienteController, CuentaController cuentaController,
             TransaccionController transaccionController) {
         super("Menú de Usuario");
-        this.usuario = usuario;
-        this.clienteController = clienteController;
-        this.cuentaController = cuentaController;
-        this.transaccionController = transaccionController;
 
         // Crear la barra de menú
         JMenuBar menuBar = new JMenuBar();
@@ -94,7 +85,7 @@ public class MenuUsuarioView extends BaseView {
             // Configurar acciones para cada botón
             switch (label) {
                 case "Crear Cliente":
-                    button.addActionListener(e -> {
+                    button.addActionListener(_ -> {
                         dispose();
                         new RegistroClienteView(clienteController, usuario, cuentaController,
                                 transaccionController).setVisible(true);
@@ -102,7 +93,7 @@ public class MenuUsuarioView extends BaseView {
                     break;
 
                 case "Ver Clientes":
-                    button.addActionListener(e -> {
+                    button.addActionListener(_ -> {
                         if (!clienteController.existenClientes()) {
                             JOptionPane.showMessageDialog(null,
                                     "No hay clientes registrados en el sistema.",
@@ -117,7 +108,7 @@ public class MenuUsuarioView extends BaseView {
                     break;
 
                 case "Crear Cuenta":
-                    button.addActionListener(e -> {
+                    button.addActionListener(_ -> {
                         if (!clienteController.existenClientes()) {
                             JOptionPane.showMessageDialog(null,
                                     "No hay clientes registrados. Debe crear clientes antes de crear cuentas.",
@@ -132,7 +123,7 @@ public class MenuUsuarioView extends BaseView {
                     break;
 
                 case "Ver Cuentas":
-                    button.addActionListener(e -> {
+                    button.addActionListener(_ -> {
                         if (!cuentaController.existenCuentas()) {
                             JOptionPane.showMessageDialog(null,
                                     "No hay cuentas registradas en el sistema.",
@@ -152,7 +143,7 @@ public class MenuUsuarioView extends BaseView {
                     break;
 
                 case "Depósitos":
-                    button.addActionListener(e -> {
+                    button.addActionListener(_ -> {
                         if (!cuentaController.existenCuentas()) {
                             JOptionPane.showMessageDialog(null,
                                     "No hay cuentas registradas. No se pueden realizar depósitos.",
@@ -167,7 +158,7 @@ public class MenuUsuarioView extends BaseView {
                     break;
 
                 case "Retiros":
-                    button.addActionListener(e -> {
+                    button.addActionListener(_ -> {
                         if (!cuentaController.existenCuentas()) {
                             JOptionPane.showMessageDialog(null,
                                     "No hay cuentas registradas. No se pueden realizar retiros.",
@@ -182,7 +173,7 @@ public class MenuUsuarioView extends BaseView {
                     break;
 
                 case "Historial de Transacciones":
-                    button.addActionListener(e -> {
+                    button.addActionListener(_ -> {
                         if (!cuentaController.existenCuentas()) {
                             JOptionPane.showMessageDialog(null,
                                     "No hay cuentas registradas. No hay historial de transacciones para mostrar.",
@@ -197,7 +188,7 @@ public class MenuUsuarioView extends BaseView {
                     break;
 
                 case "Generación de Reportes":
-                    button.addActionListener(e -> {
+                    button.addActionListener(_ -> {
                         if (!cuentaController.existenCuentas() && !clienteController.existenClientes()) {
                             JOptionPane.showMessageDialog(null,
                                     "No hay datos suficientes para generar reportes.",
@@ -212,7 +203,7 @@ public class MenuUsuarioView extends BaseView {
                     break;
 
                 case "Cerrar Sesión":
-                    button.addActionListener(e -> {
+                    button.addActionListener(_ -> {
                         dispose();
                         Usuario usuarioPorDefecto = Usuario.crearUsuarioPorDefecto();
                         new MainView(usuarioPorDefecto, clienteController, cuentaController, transaccionController)
@@ -222,7 +213,7 @@ public class MenuUsuarioView extends BaseView {
 
                 default:
                     // Para los botones sin funcionalidad aún
-                    button.addActionListener(e -> {
+                    button.addActionListener(_ -> {
                         JOptionPane.showMessageDialog(null,
                                 "Funcionalidad no implementada aún: " + label,
                                 "En desarrollo",
@@ -240,10 +231,10 @@ public class MenuUsuarioView extends BaseView {
         backgroundPanel.add(mainPanel, BorderLayout.CENTER);
 
         // Acción para mostrar los datos del estudiante
-        datosEstudianteItem.addActionListener(e -> mostrarDatosEstudiante());
+        datosEstudianteItem.addActionListener(_ -> mostrarDatosEstudiante());
 
         // Acción para generar la bitácora
-        generacionBitacoraItem.addActionListener(e -> {
+        generacionBitacoraItem.addActionListener(_ -> {
             System.out.println(new Bitacora(
                     "AdministradorIPC1B",
                     "Generación de bitácora",

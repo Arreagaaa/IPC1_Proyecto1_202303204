@@ -17,18 +17,10 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ListaCuentaView extends BaseView {
-    private CuentaController cuentaController;
-    private ClienteController clienteController;
-    private TransaccionController transaccionController;
-    private Usuario usuario;
 
     public ListaCuentaView(CuentaController cuentaController, ClienteController clienteController,
             TransaccionController transaccionController, Usuario usuario) {
         super("Ver Cuentas");
-        this.cuentaController = cuentaController;
-        this.clienteController = clienteController;
-        this.transaccionController = transaccionController;
-        this.usuario = usuario;
 
         // Contenedor principal con margen
         JPanel mainContainer = new JPanel();
@@ -223,7 +215,7 @@ public class ListaCuentaView extends BaseView {
         });
 
         // Acción para el botón crear
-        crearButton.addActionListener(e -> {
+        crearButton.addActionListener(_ -> {
             dispose();
             new CrearCuentaView(cuentaController, clienteController,
                     transaccionController, usuario).setVisible(true);
@@ -257,7 +249,7 @@ public class ListaCuentaView extends BaseView {
         });
 
         // Implementar la acción de búsqueda por CUI
-        searchButton.addActionListener(e -> {
+        searchButton.addActionListener(_ -> {
             String cuiBusqueda = searchField.getText().trim();
             if (cuiBusqueda.isEmpty()) {
                 // Si el campo está vacío, mostrar todos los clientes
@@ -292,7 +284,7 @@ public class ListaCuentaView extends BaseView {
         });
 
         // Acción para el botón volver
-        volverButton.addActionListener(e -> {
+        volverButton.addActionListener(_ -> {
             dispose();
             new MenuUsuarioView(usuario, clienteController, cuentaController,
                     transaccionController).setVisible(true);
